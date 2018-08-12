@@ -27,6 +27,15 @@ defmodule Main do
         end
 
         IO.puts "Ternary: #{if age > 50, do: "old enough", else: "less than 50"}"
+
+        [length, width] = [20, 60]
+        IO.puts "Width: #{width}"
+
+        {length, width} = {20, 60}
+        IO.puts "Length: #{length}"
+
+        [_, [_, width]] = [20, [20, 80]]
+        IO.puts "Width: #{width}"
     end
 
     def lists() do
