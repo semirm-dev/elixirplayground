@@ -70,6 +70,11 @@ defmodule Main do
 
         IO.puts "Recursion:"
         display_items(list3)
+
+        # filter even items in list1 ++ list2
+        IO.puts "Filtered even items"
+        list4 = for i <- list1 ++ list2, rem(i, 2) == 0, do: i
+        display_items(list4)
     end
 
     
