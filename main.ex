@@ -3,6 +3,9 @@ defmodule Main do
         do_stuff()
         lists()
         maps()
+        anon_funcs()
+        print_num(15)
+        print_num(-5)
     end
 
     def do_stuff() do
@@ -36,6 +39,9 @@ defmodule Main do
 
         [_, [_, width]] = [20, [20, 80]]
         IO.puts "Width: #{width}"
+
+        IO.puts "Def value: #{def_value(5)}"
+        IO.puts "Def value: #{def_value()}"
     end
 
     def lists() do
@@ -82,5 +88,32 @@ defmodule Main do
         map2 = %{europe: "Sweden", usa: "Canada"}
 
         IO.puts "Europe: #{map1["Europe"]}, Usa: #{map2.usa}"
+    end
+
+    def anon_funcs() do
+        get_sum = fn (x, y) -> x + y end
+        IO.puts "Sum: #{get_sum.(2, 6)}"
+
+        variable_input = fn
+            {x, y} -> IO.puts "Two inputs: #{x}, #{y}"
+            {x, y, z} -> IO.puts "Three inputs: #{x}, #{y}, #{z}"
+        end
+
+        variable_input.({1, 2})
+        variable_input.({1, 2, 3})
+    end
+
+    def def_value(x \\ 0) do
+        x
+    end
+
+    # guards like in erlang
+    def print_num(n) when n >= 1 do
+        IO.puts "Hooray: #{n}"
+    end
+
+    def print_num(n) when n < 1 do
+        IO.puts "WTF man: #{n}"
+        print_num(n+1)
     end
 end
