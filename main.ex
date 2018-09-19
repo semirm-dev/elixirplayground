@@ -1,11 +1,17 @@
 defmodule Main do
+
+    # .ex -> file intended to be compiled into bytecode
+    # .exs -> files interpreted at source level
+    # number < atom < reference < function < port < pid < tuple < map < list < bitstring
+
     def run() do
-        do_stuff()
+        # do_stuff()
         lists()
-        maps()
-        anon_funcs()
-        print_num(15)
-        print_num(-5)
+        # maps()
+        # anon_funcs()
+        # print_num(15)
+        # print_num(-5)
+        vars()
     end
 
     def do_stuff() do
@@ -24,8 +30,9 @@ defmodule Main do
         end
 
         case age do
-            90 -> IO.puts "Dead, you are dead man: #{age}"
+            90 -> IO.puts "Dead, you are dead man: #{age}" 
             70 -> IO.puts "You are barely alive: #{age}"
+            # <clause> when <condition> -> IO.puts "Dead, you are dead man: #{age}" # guards can be used too for more complex validation
             _ -> IO.puts ":O? #{age}"
         end
 
@@ -56,6 +63,12 @@ defmodule Main do
             4 in list3 -> IO.puts "4 in list3"
             true -> "Nowhere"
         end   
+
+        f = hd(list3)
+        t = tl(list3)
+        IO.puts "f: #{f}"
+        IO.write "t: "
+        IO.inspect t, char_list: :as_list
 
         [head | tail] = list3
         IO.puts "Head: #{head}"
@@ -112,6 +125,8 @@ defmodule Main do
         x
     end
 
+    # tail recursion will never overflow the stack, stack is not generated because there is nothing left to do after tail call
+    # in non-tail recursion there is limit of nested calls because stack is generated and can be potentially overflowed
     # guards like in erlang
     def print_num(n) when n >= 1 do
         IO.puts "Hooray: #{n}"
@@ -120,5 +135,18 @@ defmodule Main do
     def print_num(n) when n < 1 do
         IO.puts "WTF man: #{n}"
         print_num(n+1)
+    end
+
+    def vars() do
+        # unlike in erlang, in elixir we can re-assign variables
+        a = 1
+        IO.puts "a is: #{a}"
+        a = 2
+        IO.puts "a is: #{a}"
+        ^a = 2 # must match latest/current match of "a", which in this case is 2 (not 1)
+        IO.puts "a is: #{a}"
+
+         [1, ^a, 3 ] = [ 1, 2, 3 ] # use latest/current assigned "a", therefore there must be previous match of "a"
+         IO.puts "a is: #{a}"
     end
 end
