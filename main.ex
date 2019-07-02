@@ -5,17 +5,32 @@ defmodule Main do
     # number < atom < reference < function < port < pid < tuple < map < list < bitstring
 
     def run() do
-        # do_stuff()
+        do_stuff()
+        IO.puts ""
+
         lists()
-        # maps()
-        # anon_funcs()
-        # print_num(15)
-        # print_num(-5)
+        IO.puts ""
+
+        maps()
+        IO.puts ""
+
+        anon_funcs()
+        IO.puts ""
+
+        print_num(15)
+        IO.puts ""
+
+        print_num(-5)
+        IO.puts ""
+
         vars()
+        IO.puts ""
     end
 
     def do_stuff() do
         age = :rand.uniform(100) # erlang module
+
+        IO.puts :im_atom
 
         if age > 18 do
             IO.puts "You are old enough: #{age}"
@@ -24,16 +39,16 @@ defmodule Main do
         end 
 
         cond do # will break on first match
-            age >= 18 -> IO.puts "Go rock on: #{age}"
-            age >= 14 -> IO.puts "You can wait: #{age}"
-            true -> "Meh"
+            age >= 80 -> IO.puts "Go rock on: #{age}"
+            age >= 50 -> IO.puts "You can wait: #{age}"
+            true -> true
         end
 
         case age do
             90 -> IO.puts "Dead, you are dead man: #{age}" 
             70 -> IO.puts "You are barely alive: #{age}"
             # <clause> when <condition> -> IO.puts "Dead, you are dead man: #{age}" # guards can be used too for more complex validation
-            _ -> IO.puts ":O? #{age}"
+            _ -> true
         end
 
         IO.puts "Ternary: #{if age > 50, do: "old enough", else: "less than 50"}"
@@ -56,41 +71,44 @@ defmodule Main do
         list2 = [4, 5, 6]
 
         list3 = list1 ++ list2
+        IO.write "list3: "
+        IO.inspect list3
 
         cond do
             4 in list1 -> IO.puts "4 in list1"
             4 in list2 -> IO.puts "4 in list2"
-            4 in list3 -> IO.puts "4 in list3"
+            4 in list3 -> IO.puts "4 in list3" # break on previous match
             true -> "Nowhere"
         end   
 
         f = hd(list3)
         t = tl(list3)
-        IO.puts "f: #{f}"
-        IO.write "t: "
+        IO.puts "head: #{f}"
+        IO.write "tail: "
         IO.inspect t, char_list: :as_list
 
         [head | tail] = list3
-        IO.puts "Head: #{head}"
-        IO.write "Tail: " 
+        IO.puts "head: #{head}"
+        IO.write "tail: " 
         IO.inspect tail, char_list: :as_list
 
+        IO.puts "enum.each list3"
         Enum.each list3, fn item ->
             IO.puts item
         end
 
+        IO.puts "removed item 2 from list 3"
         list3 = List.delete(list3, 2)
 
-        IO.puts "Recursion:"
+        IO.puts "Recursion list3:"
         display_items(list3)
 
         # filter even items in list1 ++ list2
-        IO.puts "Filtered even items"
+        IO.puts "Filtered even items from list1 ++ list2"
         list4 = for i <- list1 ++ list2, rem(i, 2) == 0, do: i
         display_items(list4)
     end
 
-    
     # recursion
     def display_items([item|items]) do
         IO.puts item
@@ -147,6 +165,8 @@ defmodule Main do
         IO.puts "a is: #{a}"
 
          [1, ^a, 3 ] = [ 1, 2, 3 ] # use latest/current assigned "a", therefore there must be previous match of "a"
+         IO.puts "a is: #{a}"
+         [1, a, 3 ] = [ 1, 2, 3 ] # use latest/current assigned "a", therefore there must be previous match of "a"
          IO.puts "a is: #{a}"
     end
 end
