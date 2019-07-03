@@ -1,4 +1,12 @@
 defmodule Elixirplayground do
+  use Application
+
+  def start(_type, _args) do
+    run()
+
+    Task.start(fn -> :timer.sleep(100) end)
+  end
+
   @moduledoc """
   Documentation for Elixirplayground.
   """

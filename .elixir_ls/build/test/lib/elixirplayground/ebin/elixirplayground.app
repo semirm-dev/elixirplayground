@@ -3,4 +3,5 @@
               {description,"elixirplayground"},
               {modules,['Elixir.Elixirplayground']},
               {registered,[]},
-              {vsn,"0.1.0"}]}.
+              {vsn,"0.1.0"},
+              {mod,{'Elixir.Elixirplayground',[]}}]}.
