@@ -144,7 +144,7 @@ defmodule Elixirplayground do
     IO.puts(kw_list2[:name])
 
     odd? = &(rem(&1, 2) != 0)
-    total_sum = 1..100_000 |> Enum.map(&(&1 * 3)) |> Enum.filter(odd?) |> Enum.sum()
+    total_sum = 1..100 |> Enum.map(&(&1 * 3)) |> Enum.filter(odd?) |> Enum.sum()
     IO.inspect(total_sum)
   end
 
