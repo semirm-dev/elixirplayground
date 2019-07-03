@@ -4,7 +4,7 @@ defmodule Elixirplayground do
   def start(_type, _args) do
     run()
 
-    Task.start(fn -> :timer.sleep(100) end)
+    Task.start(fn -> nil end)
   end
 
   @moduledoc """
@@ -152,7 +152,9 @@ defmodule Elixirplayground do
     IO.puts(kw_list2[:name])
 
     odd? = &(rem(&1, 2) != 0)
-    total_sum = 1..100 |> Enum.map(&(&1 * 3)) |> Enum.filter(odd?) |> Enum.sum()
+    total_sum = 1..1000 |> Enum.map(&(&1 * 3)) |> Enum.filter(odd?) |> Enum.sum()
+    IO.inspect(total_sum)
+    total_sum = 1..10000 |> Stream.map(&(&1 * 3)) |> Stream.filter(odd?) |> Enum.sum()
     IO.inspect(total_sum)
   end
 
