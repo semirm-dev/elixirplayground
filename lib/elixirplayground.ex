@@ -1,8 +1,11 @@
 defmodule Elixirplayground do
   use Application
+  import Juicy
 
   def start(_type, _args) do
-    run()
+    # run()
+
+    juice()
 
     Task.start(fn -> nil end)
   end
