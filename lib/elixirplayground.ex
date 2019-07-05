@@ -111,6 +111,9 @@ defmodule Elixirplayground do
     IO.inspect(semir)
     semir = %{semir | first_name: "semir"}
     IO.inspect(semir)
+
+    IO.write("Size: ")
+    IO.puts(Size.size({:ok, "hello"}))
   end
 
   def lists() do
