@@ -2,8 +2,11 @@ defmodule Elixirplayground do
   use Application
   import Juicy
 
+  @config %{host: "127.0.0.1", port: 3456}
+  use Plug.Builder
+
   def start(_type, _args) do
-    # run()
+    run()
 
     juice()
 
@@ -28,6 +31,9 @@ defmodule Elixirplayground do
   # number < atom < reference < function < port < pid < tuple < map < list < bitstring
 
   def run() do
+    IO.inspect(@config)
+    IO.puts("")
+
     do_stuff()
     IO.puts("")
 
@@ -100,6 +106,11 @@ defmodule Elixirplayground do
 
     IO.puts("Def value: #{def_value(5)}")
     IO.puts("Def value: #{def_value()}")
+
+    semir = %User{}
+    IO.inspect(semir)
+    semir = %{semir | first_name: "semir"}
+    IO.inspect(semir)
   end
 
   def lists() do
@@ -146,7 +157,7 @@ defmodule Elixirplayground do
     list4 = for i <- list1 ++ list2, rem(i, 2) == 0, do: i
     display_items(list4)
 
-    kw_list = [{:name, "semir"}, {:age, 30}]
+    kw_list = [{:name, "semir", :surname, "mah"}, {:age, 30}]
     IO.inspect(kw_list)
 
     kw_list2 = [name: "semir", age: 30]
