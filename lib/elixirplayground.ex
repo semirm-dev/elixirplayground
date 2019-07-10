@@ -114,6 +114,13 @@ defmodule Elixirplayground do
 
     IO.write("Size: ")
     IO.puts(Size.size({:ok, "hello"}))
+
+    squared = for n <- [1, 2, 3, 4], do: n * n
+    IO.write("squared: ")
+    IO.inspect(squared)
+
+    IO.write("squared mapped: ")
+    IO.inspect(for {:good, n} <- [bad: 1, good: 2, good: 3, good: 4], do: n * n)
   end
 
   def lists() do
