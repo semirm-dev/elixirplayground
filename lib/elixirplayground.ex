@@ -6,11 +6,43 @@ defmodule Elixirplayground do
   use Plug.Builder
 
   def start(_type, _args) do
-    run()
+    args = %{ :cmd => :run, :error => :unknown }
 
-    juice()
+    IO.puts args.cmd
+    IO.puts args[:cmd]
+
+    opts = %{ :use_tls => true, :protocol => "tcp", :args => args, "meta" => :nan }
+
+    IO.inspect opts
+    IO.puts opts.use_tls
+    IO.inspect opts.args
+    IO.inspect opts[:args]
+    IO.puts opts["meta"]
+
+    line_no = 50
+
+    # if (line_no == 50) do
+    #   IO.puts "its 50"
+    #   line_no = 0
+    # end
+
+    line_no = case line_no do
+      50 -> 0
+    end
+
+    IO.puts(line_no)
+
+    # run()
+
+    # juice()
 
     Task.start(fn -> nil end)
+  end
+
+  def print_msg(msg) do
+    IO.puts("passed: " <> msg)
+    msg = "changed :("
+    IO.puts("changed: " <> msg)
   end
 
   @moduledoc """
@@ -197,6 +229,19 @@ defmodule Elixirplayground do
     map2 = %{europe: "Sweden", usa: "Canada"}
 
     IO.puts("Europe: #{map1["Europe"]}, Usa: #{map2.usa}")
+
+    args = %{ :cmd => :run, :error => :unknown }
+
+    IO.puts args.cmd
+    IO.puts args[:cmd]
+
+    opts = %{ :use_tls => true, :protocol => "tcp", :args => args, "meta" => :nan }
+
+    IO.inspect opts
+    IO.puts opts.use_tls
+    IO.inspect opts.args
+    IO.inspect opts[:args]
+    IO.puts opts["meta"]
 
     users = [
       john: %{name: "John", age: 27, languages: ["Erlang", "Ruby", "Elixir"]},
