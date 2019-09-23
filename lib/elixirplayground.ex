@@ -19,6 +19,14 @@ defmodule Elixirplayground do
     IO.inspect opts[:args]
     IO.puts opts["meta"]
 
+    kw_list = [{:name, "semir :D"}, {:surname, "mah"}, {:age, 30}]
+    IO.inspect kw_list
+    IO.inspect kw_list[:name]
+
+    kw_list2 = [name: "semir", age: 30]
+    IO.inspect kw_list2
+    IO.inspect kw_list2[:name]
+
     line_no = 50
 
     # if (line_no == 50) do
@@ -31,6 +39,10 @@ defmodule Elixirplayground do
     end
 
     IO.puts(line_no)
+
+    add_n = fn m -> fn n -> m + n end end
+    add_two = add_n.(2)
+    IO.inspect add_two.(3) # 2 parameter is remembered from definition and will be used in its body, makes sense because 2 is defined in the fn definition
 
     # run()
 
