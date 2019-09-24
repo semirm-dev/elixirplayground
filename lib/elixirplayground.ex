@@ -44,6 +44,14 @@ defmodule Elixirplayground do
     add_two = add_n.(2)
     IO.inspect add_two.(3) # 2 parameter is remembered from definition and will be used in its body, makes sense because 2 is defined in the fn definition
 
+    a = 1
+    IO.puts("a is: #{a}")
+    a = 2
+    IO.puts("a is: #{a}")
+    # must match latest/current match of "a", which in this case is 2 (not 1)
+    ^a = 2 # since a is reassigned to 2, we can not use ^a = 1 because there is no such match
+    IO.puts("a is: #{a}")
+
     # run()
 
     # juice()
@@ -219,9 +227,29 @@ defmodule Elixirplayground do
 
     IO.puts(kw_list2[:name])
 
-    odd? = &(rem(&1, 2) != 0)
+    # since ordering of &() matches IO.puts, Elixir optimized away the anonymous function, replacing it with a direct reference to the function, IO.puts/1.
+    # anonymous wrapper around IO.puts/1
+    speak = &(IO.puts(&1))
+    speak.("HI :D")
+
+    l = &length/1 # anonymous wrapper around lenght/1
+    IO.puts l.([1, 2, 3, 5])
+
+    divrem = &{ div(&1,&2), rem(&1,&2) }
+    divrem.(13, 5)
+
+    s = &"bacon and #{&1}"
+    s.("eggs")
+
+    # The & shortcut gives us a wonderful way to pass functions to other functions.
+    m = Enum.map [1,2,3,4], &(&1 + 1)
+    IO.puts m
+
+
+    odd? = &(rem(&1, 2) != 0) # converts into: fn x -> rem(x, 2) != 2 end
     total_sum = 1..1000 |> Enum.map(&(&1 * 3)) |> Enum.filter(odd?) |> Enum.sum()
     IO.inspect(total_sum)
+
     total_sum = 1..10000 |> Stream.map(&(&1 * 3)) |> Stream.filter(odd?) |> Enum.sum()
     IO.inspect(total_sum)
   end
@@ -322,10 +350,10 @@ defmodule Elixirplayground do
     # unlike in erlang, in elixir we can re-assign variables
     a = 1
     IO.puts("a is: #{a}")
-    a = 2
+    a = 2 # after this point we can not use ^a = 1, because a is reassigned to 2 and there will be no matching to 1
     IO.puts("a is: #{a}")
-    # must match latest/current match of "a", which in this case is 2 (not 1)
-    ^a = 2
+    # must match latest/current match of "a", which in this case is 2 (not 1), pin means "compare", do not reassign
+    ^a = 2 # if we use ^a = 1, it will throw error because there is no such match
     IO.puts("a is: #{a}")
 
     # use latest/current assigned "a", therefore there must be previous match of "a"
