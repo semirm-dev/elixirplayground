@@ -2,55 +2,62 @@ defmodule Elixirplayground do
   use Application
   import Juicy
 
+  # aliases
+  # alias My.Other.Module.Parser, as: Parser
+  #
+  # the as: parameters default to the last part of the module name
+  # alias My.Other.Module.{Parser, Runner}
+
+  # require a module if you want to use any macros it defines.
+  # This ensures that the macro definitions are available when your code is compiled.
+
+  # defmodule Example do
+  #   @attr "one"
+  #   def first, do: @attr
+  #   @attr "two"
+  #   def second, do: @attr
+  # end
+  #
+  # IO.puts "#{Example.second} #{Example.first}" # => two one
+  #
+  # These attributes are not variables in the conventional sense. Use them for
+  # configuration and metadata only. (Many Elixir programmers employ them where
+  # Java or Ruby programmers might use constants.)
+
+  # Tail recursion is a special case of recursion where the calling function does no more computation after making a recursive call. For example, the function
+
+  # int f(int x, int y) {
+  #   if (y == 0) {
+  #     return x;
+  #   }
+
+  #   return f(x*y, y-1);
+  # }
+  # is tail recursive (since the final instruction is a recursive call) whereas this function is not tail recursive:
+
+  # int g(int x) {
+  #   if (x == 1) {
+  #     return 1;
+  #   }
+
+  #   int y = g(x-1);
+
+  #   return x*y;
+  # }
+  # since it does some computation after the recursive call has returned.
+
   @config %{host: "127.0.0.1", port: 3456}
   use Plug.Builder
 
   def start(_type, _args) do
-    args = %{ :cmd => :run, :error => :unknown }
+    # If all the values in a list represent printable characters, it displays the list as a string; otherwise it displays a list of integers.
+    l = [99, 97, 116] # prints 'cat'
+    IO.inspect l
 
-    IO.puts args.cmd
-    IO.puts args[:cmd]
+    l2 = [99, 97, 116, 0] # prints [99, 97, 116], becuase 0 is not printable
+    IO.inspect l2
 
-    opts = %{ :use_tls => true, :protocol => "tcp", :args => args, "meta" => :nan }
 
-    IO.inspect opts
-    IO.puts opts.use_tls
-    IO.inspect opts.args
-    IO.inspect opts[:args]
-    IO.puts opts["meta"]
-
-    kw_list = [{:name, "semir :D"}, {:surname, "mah"}, {:age, 30}]
-    IO.inspect kw_list
-    IO.inspect kw_list[:name]
-
-    kw_list2 = [name: "semir", age: 30]
-    IO.inspect kw_list2
-    IO.inspect kw_list2[:name]
-
-    line_no = 50
-
-    # if (line_no == 50) do
-    #   IO.puts "its 50"
-    #   line_no = 0
-    # end
-
-    line_no = case line_no do
-      50 -> 0
-    end
-
-    IO.puts(line_no)
-
-    add_n = fn m -> fn n -> m + n end end
-    add_two = add_n.(2)
-    IO.inspect add_two.(3) # 2 parameter is remembered from definition and will be used in its body, makes sense because 2 is defined in the fn definition
-
-    a = 1
-    IO.puts("a is: #{a}")
-    a = 2
-    IO.puts("a is: #{a}")
-    # must match latest/current match of "a", which in this case is 2 (not 1)
-    ^a = 2 # since a is reassigned to 2, we can not use ^a = 1 because there is no such match
-    IO.puts("a is: #{a}")
 
     # run()
 
@@ -117,6 +124,65 @@ defmodule Elixirplayground do
     IO.puts("")
     myIf(true, do: "wow", else: "go away")
     IO.puts("")
+
+    args = %{ :cmd => :run, :error => :unknown }
+
+    IO.puts args.cmd
+    IO.puts args[:cmd]
+
+    opts = %{ :use_tls => true, :protocol => "tcp", :args => args, "meta" => :nan }
+
+    IO.inspect opts
+    IO.puts opts.use_tls
+    IO.inspect opts.args
+    IO.inspect opts[:args]
+    IO.puts opts["meta"]
+
+    kw_list = [{:name, "semir :D"}, {:surname, "mah"}, {:age, 30}]
+    IO.inspect kw_list
+    IO.inspect kw_list[:name]
+
+    kw_list2 = [name: "semir", age: 30]
+    IO.inspect kw_list2
+    IO.inspect kw_list2[:name]
+
+    line_no = 50
+
+    # if (line_no == 50) do
+    #   IO.puts "its 50"
+    #   line_no = 0
+    # end
+
+    line_no = case line_no do
+      50 -> 0
+    end
+
+    IO.puts(line_no)
+
+    add_n = fn m -> fn n -> m + n end end
+    add_two = add_n.(2)
+    IO.inspect add_two.(3) # 2 parameter is remembered from definition and will be used in its body, makes sense because 2 is defined in the fn definition
+
+    a = 1
+    IO.puts("a is: #{a}")
+    a = 2
+    IO.puts("a is: #{a}")
+    # must match latest/current match of "a", which in this case is 2 (not 1)
+    ^a = 2 # since a is reassigned to 2, we can not use ^a = 1 because there is no such match
+    IO.puts("a is: #{a}")
+
+    # people = DB.find_customers
+    # orders = Orders.for_customers(people)
+    # tax = sales_tax(orders, 2018)
+    # filing = prepare_filing(tax)
+    # becomes...
+    # filing = DB.find_customers
+    #   |> Orders.for_customers
+    #   |> sales_tax(2018)
+    #   |> prepare_filing
+    # The |> operator takes the result of the expression to its left
+    # and inserts it as the first parameter of the function invocation to its right.
+
   end
 
   def do_stuff() do
@@ -176,6 +242,9 @@ defmodule Elixirplayground do
   end
 
   def lists() do
+    # import only these two functions from List module, scope ends at the of the lists() func body
+    # import List, only: [ flatten: 1, duplicate: 2 ]
+
     list1 = [1, 2, 3]
     list2 = [4, 5, 6]
 
@@ -226,32 +295,6 @@ defmodule Elixirplayground do
     IO.inspect(kw_list2)
 
     IO.puts(kw_list2[:name])
-
-    # since ordering of &() matches IO.puts, Elixir optimized away the anonymous function, replacing it with a direct reference to the function, IO.puts/1.
-    # anonymous wrapper around IO.puts/1
-    speak = &(IO.puts(&1))
-    speak.("HI :D")
-
-    l = &length/1 # anonymous wrapper around lenght/1
-    IO.puts l.([1, 2, 3, 5])
-
-    divrem = &{ div(&1,&2), rem(&1,&2) }
-    divrem.(13, 5)
-
-    s = &"bacon and #{&1}"
-    s.("eggs")
-
-    # The & shortcut gives us a wonderful way to pass functions to other functions.
-    m = Enum.map [1,2,3,4], &(&1 + 1)
-    IO.puts m
-
-
-    odd? = &(rem(&1, 2) != 0) # converts into: fn x -> rem(x, 2) != 2 end
-    total_sum = 1..1000 |> Enum.map(&(&1 * 3)) |> Enum.filter(odd?) |> Enum.sum()
-    IO.inspect(total_sum)
-
-    total_sum = 1..10000 |> Stream.map(&(&1 * 3)) |> Stream.filter(odd?) |> Enum.sum()
-    IO.inspect(total_sum)
   end
 
   # recursion
@@ -310,6 +353,32 @@ defmodule Elixirplayground do
     cap = &List.flatten(&1, &2)
     l = cap.([1, [[2], 3]], [4, 5])
     IO.inspect(l)
+
+    # since ordering of &() matches IO.puts, Elixir optimized away the anonymous function, replacing it with a direct reference to the function, IO.puts/1.
+    # anonymous wrapper around IO.puts/1
+    speak = &(IO.puts(&1))
+    speak.("HI :D")
+
+    l = &length/1 # anonymous wrapper around lenght/1
+    IO.puts l.([1, 2, 3, 5])
+
+    divrem = &{ div(&1,&2), rem(&1,&2) }
+    divrem.(13, 5)
+
+    s = &"bacon and #{&1}"
+    s.("eggs")
+
+    # The & shortcut gives us a wonderful way to pass functions to other functions.
+    m = Enum.map [1,2,3,4], &(&1 + 1)
+    IO.puts m
+
+
+    odd? = &(rem(&1, 2) != 0) # converts into: fn x -> rem(x, 2) != 2 end
+    total_sum = 1..1000 |> Enum.map(&(&1 * 3)) |> Enum.filter(odd?) |> Enum.sum() # each Enum.* is passed as first argument to the Enum.*
+    IO.inspect(total_sum)
+
+    total_sum = 1..10000 |> Stream.map(&(&1 * 3)) |> Stream.filter(odd?) |> Enum.sum()
+    IO.inspect(total_sum)
   end
 
   # default parameter
