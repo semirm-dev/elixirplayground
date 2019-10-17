@@ -50,14 +50,7 @@ defmodule Elixirplayground do
   use Plug.Builder
 
   def start(_type, _args) do
-    # If all the values in a list represent printable characters, it displays the list as a string; otherwise it displays a list of integers.
-    l = [99, 97, 116] # prints 'cat'
-    IO.inspect l
-
-    l2 = [99, 97, 116, 0] # prints [99, 97, 116], becuase 0 is not printable
-    IO.inspect l2
-
-
+    IO.inspect my_map [1,2,3,4], &(&1 * &1)
 
     # run()
 
@@ -183,6 +176,12 @@ defmodule Elixirplayground do
     # The |> operator takes the result of the expression to its left
     # and inserts it as the first parameter of the function invocation to its right.
 
+    # If all the values in a list represent printable characters, it displays the list as a string; otherwise it displays a list of integers.
+    l = [99, 97, 116] # prints 'cat'
+    IO.inspect l
+
+    l2 = [99, 97, 116, 0] # prints [99, 97, 116], becuase 0 is not printable
+    IO.inspect l2
   end
 
   def do_stuff() do
@@ -432,6 +431,11 @@ defmodule Elixirplayground do
     [1, a, 3] = [1, 2, 3]
     IO.puts("a is: #{a}")
   end
+
+  def my_map([], _func), do: []
+  def my_map([ head | tail ], func), do: [ func.(head) | my_map(tail, func) ]
+  # usage: my_map [1,2,3,4], fn (n) -> n*n end
+  # my_map [1,2,3,4], &(&1 * &1)
 
   def myIf(condition, args) do
     IO.puts(condition)
