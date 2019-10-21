@@ -45,16 +45,30 @@ defmodule Elixirplayground do
   #   return x*y;
   # }
   # since it does some computation after the recursive call has returned.
+  #
+  # Quote from Programming Elixir 1.6
+  # The greet function might have worried you a little. Every time it receives a
+  # message, it ends up calling itself. In many languages, that adds a new frame to
+  # the stack. After a large number of messages, you might run out of memory.
+  # This doesn’t happen in Elixir, as it implements tail-call optimization. If the last
+  # thing a function does is call itself, there’s no need to make the call. Instead, the
+  # runtime simply jumps back to the start of the function. If the recursive call has
+  # arguments, then these replace the original parameters. But beware—the recursive
+  # call must be the very last thing executed.
+  #
+  # def factorial(0), do: 1
+  # def factorial(n), do: n * factorial(n-1)
+  #
+  # While the recursive call is physically the last thing in the function, it is not the
+  # last thing executed. The function has to multiply the value it returns by n.
 
   @config %{host: "127.0.0.1", port: 3456}
   use Plug.Builder
 
   def start(_type, _args) do
-    IO.inspect my_map [1,2,3,4], &(&1 * &1)
-
     # run()
 
-    # juice()
+    juice()
 
     Task.start(fn -> nil end)
   end
