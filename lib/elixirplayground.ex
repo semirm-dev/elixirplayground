@@ -1,6 +1,6 @@
 defmodule Elixirplayground do
   use Application
-  import Juicy
+  # import Juicy
 
   # aliases
   # alias My.Other.Module.Parser, as: Parser
@@ -62,13 +62,52 @@ defmodule Elixirplayground do
   # While the recursive call is physically the last thing in the function, it is not the
   # last thing executed. The function has to multiply the value it returns by n.
 
+  # common use case for "case"
+  #
+  # case Repo.insert(changeset) do
+  #   {:ok, user} ->
+  #     case Guardian.encode_and_sign(user, :token, claims) do
+  #       {:ok, token, full_claims} ->
+  #         important_stuff(token, full_claims)
+
+  #       error ->
+  #         error
+  #     end
+
+  #   error ->
+  #     error
+  # end
+  #
+  # or simply use "with"
+  #
+  # with {:ok, user} <- Repo.insert(changeset),
+  #    {:ok, token, full_claims} <- Guardian.encode_and_sign(user, :token, claims) do
+  #   important_stuff(token, full_claims)
+  # else
+  #   :error ->
+  #     IO.puts("we got error here")
+  #     :error
+  #   _ -> IO.puts("hmm, weirdo")
+  # end
+
   @config %{host: "127.0.0.1", port: 3456}
   use Plug.Builder
 
   def start(_type, _args) do
     # run()
 
-    juice()
+    # juice()
+
+    msg = "hello"
+
+    print_msg(msg)
+
+    IO.puts("msg should not be changed: " <> msg)
+
+    IO.inspect(Enum.all?(["foo", "bar", "hello"], fn(s) -> String.length(s) == 3 end))
+    IO.inspect(Enum.chunk_by(["one", "two", "three", "four", "five"], fn(x) -> String.length(x) end))
+
+
 
     Task.start(fn -> nil end)
   end
@@ -76,7 +115,7 @@ defmodule Elixirplayground do
   def print_msg(msg) do
     IO.puts("passed: " <> msg)
     msg = "changed :("
-    IO.puts("changed: " <> msg)
+    IO.puts("changed inside function only: " <> msg)
   end
 
   @moduledoc """
@@ -204,20 +243,22 @@ defmodule Elixirplayground do
 
     IO.puts(:im_atom)
 
+    # if...else
     if age > 18 do
       IO.puts("You are old enough: #{age}")
     else
       IO.puts("You are too young: #{age}")
     end
 
-    # will break on first match
-    cond do
+    # if...elseif...else
+    cond do # break on first match
       age >= 80 -> IO.puts("Go rock on: #{age}")
       age >= 50 -> IO.puts("You can wait: #{age}")
       true -> true
     end
 
-    case age do
+    # switch...case
+    case age do # break on first match
       90 -> IO.puts("Dead, you are dead man: #{age}")
       70 -> IO.puts("You are barely alive: #{age}")
       # <clause> when <condition> -> IO.puts "Dead, you are dead man: #{age}" # guards can be used too for more complex validation
@@ -444,6 +485,23 @@ defmodule Elixirplayground do
     # use latest/current assigned "a", therefore there must be previous match of "a"
     [1, a, 3] = [1, 2, 3]
     IO.puts("a is: #{a}")
+
+
+    pie = 3.14
+    case "cherry pie" do
+      ^pie -> IO.inspect("Not so tasty") # pin operator must be used in order to match against existing variable
+      pie -> IO.inspect("I bet #{pie} is tasty") # this is not original pie variable, but newly created matching, so it always evaluates to true
+    end
+    ^pie = 3.14
+    IO.inspect(pie)
+
+    greeting = "Hello"
+    greet = fn
+      (^greeting, name) -> IO.inspect("Hi #{name}")
+      (greeting, name) -> IO.inspect("#{greeting}, #{name}")
+    end
+    greet.("Hello", "Sean") # will match first clause
+    greet.("Mornin'", "Sean") # will match anything else because no previous matching was found for "greeting"
   end
 
   def my_map([], _func), do: []
